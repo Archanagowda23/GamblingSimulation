@@ -28,50 +28,57 @@ public class GamblingSimulation {
 
     public static void main(String[] args) {
 
-        //variables to check lucky day and unlucky day
-        int luckyDay = 0;
-        int unluckyDay = 0;
-        int maxAmtWon = 0;
-        int maxAmtLoss = 0;
+        int month=0;
+        do{
+            System.out.println("-----------------------Month "+(++month)+"-----------------------");
+            //variables to check lucky day and unlucky day
+            int netTotal = 0;
+            int luckyDayAmt = 0;
+            int unluckyDayAmt = 0;
+            int luckyDay = 0;
+            int unluckyDay = 0;
 
-        for (int day = 1; day <= DAYS; day++) {
+            for (int day=1;day<=DAYS;day++) {
 
-            int endDayAmount = STARTING_DAILY_STAKE;
-            int dailyWin = 0;
-            int dailyLoss = 0;
+                int endDayAmount = STARTING_DAILY_STAKE;
+                int dailyWin = 0;
+                int dailyLoss = 0;
 
-            while (checkResign(STARTING_DAILY_STAKE, endDayAmount) != 1) {
+                while(checkResign(STARTING_DAILY_STAKE, endDayAmount) != 1){
 
-                if (checkWin() == 1) {
-                    endDayAmount += BET;
-                    dailyWin += BET;
-                } else {
-                    endDayAmount -= BET;
-                    dailyLoss += BET;
+                    if (checkWin() == 1){
+                        endDayAmount += BET;
+                        dailyWin += BET;
+                    }
+                    else {
+                        endDayAmount -= BET;
+                        dailyLoss += BET;
+                    }
                 }
+                totalWin += dailyWin;
+                totalLoss += dailyLoss;
+                netTotal += (dailyWin - dailyLoss);
+
+                // functionality to check lucky day and unlucky day
+                if (luckyDayAmt < netTotal) {
+                    luckyDayAmt = netTotal;
+                    luckyDay = day;
+                }
+
+                if (unluckyDayAmt > netTotal) {
+                    unluckyDayAmt = netTotal;
+                    unluckyDay = day;
+                }
+
+                System.out.println("On day "+ day +"\tgambler won:\t"+ dailyWin +"\tand lost:\t"+ dailyLoss +"\tand day result:\t"+ (dailyWin - dailyLoss) +".");
             }
-            totalWin += dailyWin;
-            totalLoss += dailyLoss;
 
-            //funtionality to check lucky and unlucky day
-            maxAmtWon = Math.max(maxAmtWon, dailyWin);
-            maxAmtLoss = Math.max(maxAmtLoss, dailyLoss);
-
-            if (maxAmtWon == dailyWin)
-                luckyDay = day;
-
-            if (maxAmtLoss == dailyLoss)
-                unluckyDay = day;
-
-            System.out.println("On day " + day + "\tgambler won:\t" + dailyWin + "\tand lost:\t" + dailyLoss + "\tand day result:\t" + (dailyWin - dailyLoss) + ".");
-        }
-
-        System.out.println("Total amount won : " + totalWin);
-        System.out.println("Total amount lost : " + totalLoss);
-        System.out.println("Net amount : " + (totalWin - totalLoss));
-        System.out.println("Lucky day is Day " + luckyDay + " amount won is " + maxAmtWon + ".");
-        System.out.println("Unlucky day is Day " + unluckyDay + " amount lost is " + maxAmtLoss + ".");
-
+            System.out.println("Total amount won : "+ totalWin);
+            System.out.println("Total amount lost : "+ totalLoss);
+            System.out.println("Net amount : "+ (totalWin-totalLoss));
+            System.out.println("Lucky day is Day "+luckyDay+" amount won is "+luckyDayAmt+".");
+            System.out.println("Unlucky day is Day "+unluckyDay+" amount lost is "+unluckyDayAmt+".");
+        }while((totalWin-totalLoss) > 0);//if net amount is greater than 0 then continue
     }
 }
 
