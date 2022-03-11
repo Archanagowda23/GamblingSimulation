@@ -28,30 +28,50 @@ public class GamblingSimulation {
 
     public static void main(String[] args) {
 
-        for (int day=1;day<=DAYS;day++) {
+        //variables to check lucky day and unlucky day
+        int luckyDay = 0;
+        int unluckyDay = 0;
+        int maxAmtWon = 0;
+        int maxAmtLoss = 0;
+
+        for (int day = 1; day <= DAYS; day++) {
 
             int endDayAmount = STARTING_DAILY_STAKE;
             int dailyWin = 0;
             int dailyLoss = 0;
 
-            while(checkResign(STARTING_DAILY_STAKE, endDayAmount) != 1){
-                if (checkWin() == 1){
+            while (checkResign(STARTING_DAILY_STAKE, endDayAmount) != 1) {
+
+                if (checkWin() == 1) {
                     endDayAmount += BET;
                     dailyWin += BET;
-                }
-                else {
+                } else {
                     endDayAmount -= BET;
                     dailyLoss += BET;
                 }
             }
             totalWin += dailyWin;
             totalLoss += dailyLoss;
-            System.out.println("On day "+ day +"\tgambler won:\t"+ dailyWin +"\tand lost:\t"+ dailyLoss +"\tand day result:\t"+ (dailyWin - dailyLoss) +".");
+
+            //funtionality to check lucky and unlucky day
+            maxAmtWon = Math.max(maxAmtWon, dailyWin);
+            maxAmtLoss = Math.max(maxAmtLoss, dailyLoss);
+
+            if (maxAmtWon == dailyWin)
+                luckyDay = day;
+
+            if (maxAmtLoss == dailyLoss)
+                unluckyDay = day;
+
+            System.out.println("On day " + day + "\tgambler won:\t" + dailyWin + "\tand lost:\t" + dailyLoss + "\tand day result:\t" + (dailyWin - dailyLoss) + ".");
         }
 
-        System.out.println("Total amount won : "+ totalWin);
-        System.out.println("Total amount lost : "+ totalLoss);
-        System.out.println("Net amount : "+ (totalWin-totalLoss));
+        System.out.println("Total amount won : " + totalWin);
+        System.out.println("Total amount lost : " + totalLoss);
+        System.out.println("Net amount : " + (totalWin - totalLoss));
+        System.out.println("Lucky day is Day " + luckyDay + " amount won is " + maxAmtWon + ".");
+        System.out.println("Unlucky day is Day " + unluckyDay + " amount lost is " + maxAmtLoss + ".");
+
     }
 }
 
