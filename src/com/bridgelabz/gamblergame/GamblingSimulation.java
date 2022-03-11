@@ -4,6 +4,11 @@ public class GamblingSimulation {
 
     public static final int STARTING_DAILY_STAKE = 100;
     public static final int BET = 1;
+    public static final int DAYS = 20;
+
+    //Global variables
+    public static int totalWin = 0;
+    public static int totalLoss = 0;
 
     //method to check win or loss
     private static int checkWin() {
@@ -23,17 +28,29 @@ public class GamblingSimulation {
 
     public static void main(String[] args) {
 
-        int endDayAmount = STARTING_DAILY_STAKE;
+        for (int day = 1; day <= DAYS; day++) {
 
-        if (checkWin() == 1)
-            endDayAmount += BET;
-        else
-            endDayAmount -= BET;
+            int endDayAmount = STARTING_DAILY_STAKE;
+            int dailyWin = 0;
+            int dailyLoss = 0;
 
-        System.out.println("Welcome to Gambler Simulator Program");
-        System.out.println("Starting Daily Stake : "+ STARTING_DAILY_STAKE);
-        System.out.println("Starting Daily Stake : "+ BET);
-        System.out.println("End of the day amount : "+ endDayAmount);
+            while (checkResign(STARTING_DAILY_STAKE, endDayAmount) != 1) {
 
+                if (checkWin() == 1) {
+                    endDayAmount += BET;
+                    dailyWin += BET;
+                } else {
+                    endDayAmount -= BET;
+                    dailyLoss += BET;
+                }
+            }
+            totalWin += dailyWin;
+            totalLoss += dailyLoss;
+        }
+        System.out.println("After " + DAYS + " days :");
+        System.out.println("Total amount won : " + totalWin);
+        System.out.println("Total amount lost : " + totalLoss);
+        System.out.println("Net amount : " + (totalWin - totalLoss));
     }
 }
+
